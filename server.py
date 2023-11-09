@@ -2,17 +2,12 @@ import socket
 import threading
 import sys
 
+from server_app import *
+
 # Global variables
 clients_lock = threading.Lock()
 clients = []
 running = True
-
-def app(client_socket):
-    while True:
-        message = client_socket.recv(1024).decode('utf-8')
-        
-        if message:
-            client_socket.send(message.encode('utf-8'))
     
 
 def handle_client(client_socket, client_address):

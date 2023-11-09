@@ -1,17 +1,9 @@
 import socket
 import sys
 
+from client_app import *
+
 user_name = None  # Global variable to store the user's name
-
-def app(client_socket):
-    while True:
-        message = input("Message: ")
-        
-        if message:
-            client_socket.send(message.encode('utf-8'))
-            message = client_socket.recv(1024).decode('utf-8')
-            print(message)
-
 
 def main():
     global user_name
