@@ -6,3 +6,8 @@ Email:
 vdemoraessique00@mylangara.ca
 Password:
 CoucouProject
+
+
+database: 
+user-> ProjectCoucou
+Password: THEproject
