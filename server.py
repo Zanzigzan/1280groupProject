@@ -18,7 +18,7 @@ def handle_client(client_socket, client_address):
         clients.append(client_socket)
 
     try:
-        app(client_socket)
+        app(client_socket, client_address)
 
     except ConnectionResetError:
         print(f"[-] Connection reset by {client_address}")
