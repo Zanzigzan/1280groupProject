@@ -11,6 +11,7 @@ def send_to_server(message):
     socket.send(message.encode('utf-8'))
 
 
+### APP
 def app(client_socket):
     global socket
     global user_name
