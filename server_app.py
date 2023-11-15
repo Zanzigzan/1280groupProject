@@ -25,3 +25,13 @@ def app(client_socket, client_address):
         message = recive_message()
         
         send_message(message)
+
+
+
+def firstMenu():
+    userInput = int(input("Welcome to Coucou! Choose the option: \n1.Register\n2.Log In\n3.Exit"))
+    if userInput == 1:
+        register()
+    elif userInput == 2:
+        LogIn()
+    elif userInput == 3:
