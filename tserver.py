@@ -18,12 +18,11 @@ def send_to_client(message):
     
     
 def register_menu():
-    username = recive_from_client()
-    password = recive_from_client()
+    username = get_message()
+    password = get_message()
     # mongobd_oparations.register(username, password)
-    # msg = "You have successfully registered.\nYour username is " + username + ", and your password is " + password + "."
-    msg = db.register(username, password)
-    send_to_client(msg)
+    msg = "You have successfully registered.\nYour username is " + username + ", and your password is " + password + "."
+    send_message(msg)
     print(username)
     print(password)
 
@@ -31,14 +30,14 @@ def register_menu():
         
       
 def Login_menu():
-    userName = recive_from_client()
-    password = recive_from_client()
+    userName = get_message()
+    password = get_message()
     
 def Exit_menu():
     pass
     
 def Menu():
-    userInput = recive_from_client()
+    userInput = get_message()
     if userInput == "1":
         register_menu()
     elif userInput == "2":
