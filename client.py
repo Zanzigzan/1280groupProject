@@ -3,10 +3,7 @@ import sys
 
 from client_app import *
 
-user_name = None  # Global variable to store the user's name
-
 def main():
-    global user_name
     host = '127.0.0.1'
     port = 12345
 
