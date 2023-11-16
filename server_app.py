@@ -26,15 +26,19 @@ def register_menu():
     send_to_client(msg)
     print(username)
     print(password)
-
-        
-        
+       
       
-def Login_menu():
+def login_menu():
     userName = recive_from_client()
     password = recive_from_client()
+
+def send_messages_menu():
+    pass
+
+def check_messages_menu():
+    pass
     
-def Exit_menu():
+def exit_menu():
     pass
     
 def Menu():
@@ -42,9 +46,13 @@ def Menu():
     if userInput == "1":
         register_menu()
     elif userInput == "2":
-        Login_menu()
+        login_menu()
     elif userInput == "3":
-        Exit_menu()
+        send_messages_menu()
+    elif userInput == "4":
+        check_messages_menu()
+    else:
+        exit_menu()
 
 ### APP
 def app(client_socket, client_address):

@@ -26,12 +26,18 @@ def register():
 def login():
     pass
 
+def send_messages():
+    pass
+
+def check_all_messages():
+    pass
+
 def exit():
     pass
 
 def Menu():
     while True:
-        userInput = input("Welcome to Coucou! Choose the option: \n1.Register\n2.Log In\n3.Exit\n")
+        userInput = input("Welcome to Coucou! Choose the option: \n1.Register\n2.Log In\n3.Send a Message\n4.See recieved messages\n5.Exit")
         if (userInput== "1"):
             send_to_server("1")
             register()
@@ -40,8 +46,16 @@ def Menu():
             send_to_server("2")
             login()
             break
-        elif (userInput== "3"):
+        elif(userInput == "3"):
             send_to_server("3")
+            send_messages()
+            break
+        elif(userInput == "4"):
+            send_to_server("4")
+            check_all_messages()
+            break
+        elif (userInput== "5"):
+            send_to_server("5")
             exit()
             break
         else:
@@ -54,6 +68,5 @@ def app(client_socket):
     global user_name
     socket = client_socket
 
-    
     while True:
         Menu()
