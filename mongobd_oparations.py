@@ -67,6 +67,7 @@ def insert_message(from_username, to_username, message):
 
 def get_chats(username):
     # Checks all combinations of username + someone
+    chats = db["Chats"]
     
     # Should return list of all chats with logged in user
     pass
@@ -80,9 +81,20 @@ def get_messages(username1, username2):
 def delete_message(date):
     # change the message with certain id 
     messages = db["messages"]
+
+    try:
+        messages.delete_one({
+            "date" : date
+        })
+        return "Message was deleted"
     
+    except Exception as e:
+        print(e)
+        return "Error"
+    
+    return "The message was not found"
     # Just change message content to "*Deleted*"
-    pass
+    
 
 
 # TESTS
@@ -95,4 +107,5 @@ def delete_message(date):
 # print(login("Tom1", "Tom123"))
 # print(login("Tom", "Tom133"))
 
-# insert_message("Tom", "Tom2", "Hello Tom2! Again")
+#insert_message("Tom", "Tom2", "Hello Tom2! yoo test 1")
+delete_message("2023-11-17T15:32:58.092+00:00")
