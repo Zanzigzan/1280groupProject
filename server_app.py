@@ -2,6 +2,8 @@ import mongobd_oparations as db
 
 global socket
 global c_address
+global username
+global password
 
 # Utility functions
 def recive_from_client():
@@ -16,43 +18,76 @@ def send_to_client(message):
     
     socket.send(message.encode('utf-8'))
     
-    
-def register_menu():
-    username = recive_from_client()
-    password = recive_from_client()
-    # mongobd_oparations.register(username, password)
-    # msg = "You have successfully registered.\nYour username is " + username + ", and your password is " + password + "."
-    msg = db.register(username, password)
-    send_to_client(msg)
-    print(username)
-    print(password)
-       
-      
-def login_menu():
-    userName = recive_from_client()
-    password = recive_from_client()
 
-def send_messages_menu():
+def login():
+    global username
+    global password
+    msg = ""
+    while msg != "Logged in":
+        username = recive_from_client()
+        password = recive_from_client()
+        msg = db.login(username, password)
+        send_to_client(msg)
+
+    
+def register():
+    msg = ""
+    while msg != "User created successfully":
+        #login_menu()
+        username = recive_from_client()
+        password = recive_from_client()
+        msg = db.register(username, password)
+        send_to_client(msg)
+
+
+def open_list():
+    while True:
+        
+        
+        userInput = input("EXIT\n")
+
+        if userInput.upper() == 'EXIT':
+            send_to_server(userInput)
+            break
+        
+        if (int(userInput) < len(users)):
+            open_chat()
+        else:
+            print("Wrong input. Please input the correct number.")
+
+def user_menu():
+    while True:
+        userInput = recive_from_client()
+
+        if userInput.upper() == 'EXIT':
+            break
+        
+        if (userInput== "1"):
+            open_list()
+
+
+
+
+def send_message():
     pass
 
-def check_messages_menu():
+def get_messages():
     pass
     
-def exit_menu():
+def logout():
     pass
     
 def Menu():
-    userInput = recive_from_client()
-    if userInput == "1":
-        register_menu()
-    elif userInput == "2":
-        login_menu()
-    elif userInput == "3":
-        send_messages_menu()
-    elif userInput == "4":
-        check_messages_menu()
-    else:
-        exit_menu()
+    while True:
+        userInput = recive_from_client()
+
+        if userInput.upper() == 'EXIT':
+            break
+
+        if userInput == "1":
+            register()
+        elif userInput == "2":
+            login()
 
 ### APP
 def app(client_socket, client_address):
@@ -60,6 +95,5 @@ def app(client_socket, client_address):
     global c_address
     socket = client_socket
     c_address = client_address
-    
-    while True:
-        Menu()
+
+    Menu()
