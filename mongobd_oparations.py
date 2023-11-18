@@ -1,6 +1,7 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from datetime import datetime
+from dateutil.parser import parse
 
 
 uri = "mongodb+srv://ProjectCoucou:THEproject@cluster0.ekjezah.mongodb.net/?retryWrites=true&w=majority"
@@ -89,28 +90,44 @@ def get_chats(username):
     return chat_usernames
 
 def get_messages(username1, username2):
-    # where username1 and username2 are both present
-    messages = db["messages"]
-    
-    pass
-
-def delete_message(date):
-    # change the message with certain id 
-    messages = db["messages"]
+    chats = db["chats"]
+    users = [username1, username2]
 
     try:
-        messages.delete_one({
-            "date" : date
-        })
-        return "Message was deleted"
-    
+        # Fetch the chat document for the specified users
+        chat_document = chats.find_one({"users": {"$all": users}})
+
+        # If the chat document exists, return the messages array
+        if chat_document:
+            return chat_document["messages"]
+        else:
+            # Return an empty list if no chat exists between these users
+            return []
     except Exception as e:
-        print(e)
-        return "Error"
-    
-    return "The message was not found"
-    # Just change message content to "*Deleted*"
-    
+        print(f"An error occurred: {e}")
+        return []
+
+
+def delete_message(target_date_str):
+    chats = db["chats"]
+
+    # Convert the target_date string to a datetime object
+    try:
+        target_date = parse(target_date_str)
+    except ValueError as e:
+        print(f"Date parsing error: {e}")
+        return
+
+    try:
+        # Update the messages in all chats
+        result = chats.update_many(
+            {"messages.date": target_date},
+            {"$set": {"messages.$.message": "***DELETED***"}}
+        )
+
+        print(f"Number of documents modified: {result.modified_count}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 # TESTS
@@ -123,7 +140,15 @@ def delete_message(date):
 # print(login("Tom1", "Tom123"))
 # print(login("Tom", "Tom133"))
 
-insert_message("Tom", "Victor", "Hello Victor! yoo test 1")
+# insert_message("Tom", "Victor", "Hello Victor! yoo test 1")
 # delete_message("2023-11-17T15:32:58.092+00:00")
 
 # print(get_chats("Tom"))
+
+# delete_message('2023-11-17 17:27:10.392000')
+
+messages = get_messages('Tom', 'Victor')
+
+for message in messages:
+    print(f"{message['date']}\t{message['author']}:\t {message['message']}")
+    
