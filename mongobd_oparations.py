@@ -51,25 +51,42 @@ def login(username, password):
         return "Username or password are incorrect"
 
 def insert_message(from_username, to_username, message):
-    messages = db["messages"]
+    chats = db["chats"]
+    users = [from_username, to_username]
     
     try:
-        messages.insert_one({
-            "from_username": from_username,
-            "to_username": to_username,
-            "message": message,
-            "date": datetime.now(),
+        if chats.count_documents({"users": {"$all": users}}) == 0:
+            chats.insert_one({
+                "users": users,
+                "messages": [],
             })
+            
+
+        chats.update_many(
+            {"users": {"$all": users}},
+            {"$push": {
+                "messages": {"$each": [{
+                    "author": from_username,
+                    "message": message,
+                    "date": datetime.now(),
+                }]
+                }}}
+        )
         
     except Exception as e:
         print(e)
     
 
 def get_chats(username):
-    # Checks all combinations of username + someone
+    chat_usernames = []
+    chats = db["chats"]
     
-    # Should return list of all chats with logged in user
-    pass
+    data = chats.find({"users": username})
+
+    for row in data:
+        chat_usernames.append(row['users'])
+    
+    return chat_usernames
 
 def get_messages(username1, username2):
     # where username1 and username2 are both present
@@ -80,9 +97,20 @@ def get_messages(username1, username2):
 def delete_message(date):
     # change the message with certain id 
     messages = db["messages"]
+
+    try:
+        messages.delete_one({
+            "date" : date
+        })
+        return "Message was deleted"
     
+    except Exception as e:
+        print(e)
+        return "Error"
+    
+    return "The message was not found"
     # Just change message content to "*Deleted*"
-    pass
+    
 
 
 # TESTS
@@ -95,4 +123,7 @@ def delete_message(date):
 # print(login("Tom1", "Tom123"))
 # print(login("Tom", "Tom133"))
 
-# insert_message("Tom", "Tom2", "Hello Tom2! Again")
+insert_message("Tom", "Victor", "Hello Victor! yoo test 1")
+# delete_message("2023-11-17T15:32:58.092+00:00")
+
+# print(get_chats("Tom"))
