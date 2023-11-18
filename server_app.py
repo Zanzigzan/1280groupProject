@@ -47,7 +47,7 @@ def delete_message():
     pass
 
 def get_messages():
-    
+
     messages = db.get_messages(username,)
     send_to_client(str(messages))
 
@@ -90,7 +90,7 @@ def user_menu():
             break
         
         if (userInput== "1"):
-            open_list()
+            open_userlist()
 
 
 

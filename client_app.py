@@ -107,7 +107,7 @@ def user_menu():
         
         if (userInput== "1"):
             send_to_server(userInput)
-            open_list()
+            open_userlist()
         else:
             print("Wrong input. Please input the correct number.")
 
