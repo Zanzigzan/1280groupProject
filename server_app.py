@@ -40,20 +40,47 @@ def register():
         send_to_client(msg)
 
 
-def open_list():
+def send_message():
+    pass
+
+def delete_message():
+    pass
+
+def get_messages():
+    
+    messages = db.get_messages(username,)
+    send_to_client(str(messages))
+
+def open_chat():
+    get_messages()
+
     while True:
-        
-        
-        userInput = input("EXIT\n")
+        userInput = recive_from_client()
 
         if userInput.upper() == 'EXIT':
-            send_to_server(userInput)
+            break
+        if (userInput== "1"):
+            send_message()
+        elif (userInput== "2"):
+            delete_message()
+        elif (userInput== "3"):
+            get_messages()
+
+
+def open_userlist():
+    while True:
+        users = db.get_chats(username)
+
+        send_to_client(str(users))
+
+        userInput = recive_from_client()
+
+        if userInput == 'EXIT':
             break
         
         if (int(userInput) < len(users)):
             open_chat()
-        else:
-            print("Wrong input. Please input the correct number.")
+
 
 def user_menu():
     while True:
@@ -67,15 +94,6 @@ def user_menu():
 
 
 
-
-def send_message():
-    pass
-
-def get_messages():
-    pass
-    
-def logout():
-    pass
     
 def Menu():
     while True:

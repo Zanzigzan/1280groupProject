@@ -1,3 +1,4 @@
+import json
 global user_name
 global socket
 
@@ -28,6 +29,19 @@ def register():
         else:
             print("Please reconfirm your password.")
 
+
+
+def send_message():
+    pass
+
+def delete_message():
+    pass
+
+def get_messages():
+    pass
+
+
+
 def open_chat():
     get_messages()
 
@@ -52,13 +66,15 @@ def open_chat():
 
 
 
-def open_list():
+def open_userlist():
     while True:
         print("Choose the option: \n")
 
         users = recive_from_server()
-        # TODO change users from string to array
-        print(users)
+        users_array = json.loads(users)
+        for count, ele in enumerate(users_array):
+            print(f"{count}. {ele}")
+        
 
         userInput = input("EXIT\n")
 
@@ -96,14 +112,7 @@ def user_menu():
             print("Wrong input. Please input the correct number.")
 
 
-def send_message():
-    pass
 
-def delete_message():
-    pass
-
-def get_messages():
-    pass
 
 def Menu():
     while True:
