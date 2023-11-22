@@ -6,13 +6,13 @@ uri = "mongodb+srv://ProjectCoucou:THEproject@cluster0.ekjezah.mongodb.net/?retr
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client["Coucou"]
-chats = db["chats"]
+chats = db["reports"]
 
 # Send a ping to confirm a successful connection
 try:
     data = {
-        "users": ["Isabelle", "Tom"],
-        "messages": [],
+        "reportedUser": "Tom",
+        "reporters": ["Victor"],
     }
 
     chats.insert_one(data)
