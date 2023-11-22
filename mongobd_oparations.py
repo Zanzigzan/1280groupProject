@@ -129,19 +129,37 @@ def delete_message(target_date_str):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def delete_user(username):
+    # Delete all chats related to the user
+    
+    
+    # Delete the user
+    
+    pass
 
 def report_user(reported_user, reporter):
     reports = db["reports"]
+    
     try:
+        # Create a row if it does not exist
         if reports.count_documents({"reported user": reported_user}) == 0:
             reports.insert_one({
                 "reported user": reported_user,
                 "reports": [],
             })
 
-        if reports.count_documents({"reported user": reported_user}) != 0:
-    
-    except Exception as e: 
+        # Add reporter to reports if it is not already there 
+        if not (reports.find_one({"reported user": reported_user,"reports": reporter})):
+            reports.update_one(
+                {"reported user": reported_user},
+                {"$push": {"reports": reporter}}
+            )
+        
+        # If at least 3 people reported delete this user
+        if len(reports.get("reports", [])) == 3:
+            delete_user()
+            
+    except Exception as e:
         print(e)
         return "An error has ocurred!"
 
