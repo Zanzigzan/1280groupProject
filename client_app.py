@@ -1,5 +1,6 @@
 import json
-global user_name
+global username
+global password
 global socket
 
 # Utility functions
@@ -13,24 +14,6 @@ def send_to_server(message):
 
 #######################################################
 
-def register():
-    while True:
-        username = input("Enter your username: ")
-        password = input("Enter your password: ")
-        confirmPassword = input("Confirm your password: ")
-        if(password == confirmPassword):
-            send_to_server(username)
-            send_to_server(password)
-            msg = recive_from_server()
-            print(msg)
-            if(msg == "User created successfully"):
-                break
-
-        else:
-            print("Please reconfirm your password.")
-
-
-
 def send_message():
     pass
 
@@ -43,6 +26,7 @@ def get_messages():
 
 
 def open_chat():
+    #display all messages related to the user
     get_messages()
 
     while True:
@@ -72,10 +56,11 @@ def open_userlist():
 
         users = recive_from_server()
         users_array = json.loads(users)
-        for count, ele in enumerate(users_array):
-            print(f"{count}. {ele}")
+        for count, name_pair in enumerate(users_array):
+            for name in name_pair:
+                if name != username:
+                    print(f"{count}. {name}")
         
-
         userInput = input("EXIT\n")
 
         if userInput.upper() == 'EXIT':
@@ -83,20 +68,12 @@ def open_userlist():
             break
         
         if (int(userInput) < len(users)):
+            send_to_server(userInput)
             open_chat()
         else:
             print("Wrong input. Please input the correct number.")
     
-def login():
-        username = input("Enter your username: ")
-        password = input("Enter your password: ")
-        send_to_server(username)
-        send_to_server(password)
-        msg = recive_from_server()
-        print(msg)
-        if(msg == "Logged in"):
-            user_menu()
-    
+
 def user_menu():
     while True:
         userInput = input("Choose the option: \n1.Open chats\nEXIT\n")
@@ -111,7 +88,39 @@ def user_menu():
         else:
             print("Wrong input. Please input the correct number.")
 
+def login():
+        #add username to be global, to be used in open_listusers()
+        global username
+        global password
+        
+        # check if msg from server is logged in,if yes, go to next menu,
+        # if not, continu loop
+        while True:
+            username = input("Enter your username: ")
+            password = input("Enter your password: ")
+            send_to_server(username)
+            send_to_server(password)   
+            msg = recive_from_server()
+            print(msg)
+            if(msg == "Logged in"):
+                user_menu()
+                break
 
+
+def register():
+    while True:
+        username = input("Enter your username: ")
+        password = input("Enter your password: ")
+        confirmPassword = input("Confirm your password: ")
+        if(password == confirmPassword):
+            send_to_server(username)
+            send_to_server(password)
+            msg = recive_from_server()
+            print(msg)
+            if(msg == "User created successfully"):
+                break
+        else:
+            print("Please reconfirm your password.")
 
 
 def Menu():
@@ -121,7 +130,6 @@ def Menu():
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
             break
-        
         if (userInput== "1"):
             send_to_server(userInput)
             register()

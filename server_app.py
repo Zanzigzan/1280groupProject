@@ -18,27 +18,7 @@ def send_to_client(message):
     
     socket.send(message.encode('utf-8'))
     
-
-def login():
-    global username
-    global password
-    msg = ""
-    while msg != "Logged in":
-        username = recive_from_client()
-        password = recive_from_client()
-        msg = db.login(username, password)
-        send_to_client(msg)
-
-    
-def register():
-    msg = ""
-    while msg != "User created successfully":
-        #login_menu()
-        username = recive_from_client()
-        password = recive_from_client()
-        msg = db.register(username, password)
-        send_to_client(msg)
-
+#############################################
 
 def send_message():
     pass
@@ -46,13 +26,13 @@ def send_message():
 def delete_message():
     pass
 
-def get_messages():
+def get_messages(friendname):
 
-    messages = db.get_messages(username,)
+    messages = db.get_messages(username,friendname)
     send_to_client(str(messages))
 
-def open_chat():
-    get_messages()
+def open_chat(friendname):
+    get_messages(friendname)
 
     while True:
         userInput = recive_from_client()
@@ -79,20 +59,49 @@ def open_userlist():
             break
         
         if (int(userInput) < len(users)):
-            open_chat()
+            #get the friendname here and pass in the method below
+            friendname = ""
+            name_pair = users[userInput]
+            for name in name_pair:
+                if name != username:
+                    friendname = name
+            open_chat(friendname)
 
 
 def user_menu():
     while True:
         userInput = recive_from_client()
 
-        if userInput.upper() == 'EXIT':
+        if (userInput.upper() == 'EXIT'):
             break
         
-        if (userInput== "1"):
+        if (userInput == "1"):
             open_userlist()
 
+def login():
+    global username
+    global password
 
+    #if logged in, go to list_users(), break
+    # if not, continu loop   
+    while True:
+        username = recive_from_client()
+        password = recive_from_client()
+        msg = db.login(username, password)
+        send_to_client(msg)
+        if(msg == "Logged in"):
+            user_menu()
+            break   # is break necessary here
+        
+    
+def register():
+    msg = ""
+    while msg != "User created successfully":
+        #login_menu()
+        username = recive_from_client()
+        password = recive_from_client()
+        msg = db.register(username, password)
+        send_to_client(msg)
 
     
 def Menu():
