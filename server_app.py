@@ -4,6 +4,7 @@ global socket
 global c_address
 global username
 global password
+global friendname
 
 # Utility functions
 def recive_from_client():
@@ -21,18 +22,20 @@ def send_to_client(message):
 #############################################
 
 def send_message():
-    pass
+    msg = recive_from_client()
+    print(msg)
+    #db.insert_message(username, friendname, msg)
+
 
 def delete_message():
     pass
 
-def get_messages(friendname):
-
+def get_messages():
     messages = db.get_messages(username,friendname)
     send_to_client(str(messages))
 
-def open_chat(friendname):
-    get_messages(friendname)
+def open_chat():
+    get_messages()
 
     while True:
         userInput = recive_from_client()
@@ -61,12 +64,13 @@ def open_userlist():
         
         if (int(userInput) < len(users)):
             #get the friendname here and pass in the method below
+            global friendname
             friendname = ""
             name_pair = users[userInput]
             for name in name_pair:
                 if name != username:
                     friendname = name
-            open_chat(friendname)
+            open_chat()
 
 
 def user_menu():

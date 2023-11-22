@@ -15,7 +15,9 @@ def send_to_server(message):
 #######################################################
 
 def send_message():
-    pass
+    userInput = input("Type your message: ")
+    print(userInput)
+    send_to_server(userInput)
 
 def delete_message():
     pass
