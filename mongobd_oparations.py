@@ -130,6 +130,21 @@ def delete_message(target_date_str):
         print(f"An error occurred: {e}")
 
 
+def report_user(reported_user, reporter):
+    reports = db["reports"]
+    try:
+        if reports.count_documents({"reported user": reported_user}) == 0:
+            reports.insert_one({
+                "reported user": reported_user,
+                "reports": [],
+            })
+
+        if reports.count_documents({"reported user": reported_user}) != 0:
+    
+    except Exception as e: 
+        print(e)
+        return "An error has ocurred!"
+
 # TESTS
 # register("Tom", "Tom123")
 
@@ -147,8 +162,9 @@ def delete_message(target_date_str):
 
 # delete_message('2023-11-17 17:27:10.392000')
 
-messages = get_messages('Tom', 'Victor')
+# messages = get_messages('Tom', 'Victor')
 
-for message in messages:
-    print(f"{message['date']}\t{message['author']}:\t {message['message']}")
-    
+# for message in messages:
+ #   print(f"{message['date']}\t{message['author']}:\t {message['message']}")
+
+report_user("Victor", "Tom")  
