@@ -83,7 +83,7 @@ def get_chats(username):
     chats = db["chats"]
     
     data = chats.find({"users": username})
-
+    
     for row in data:
         chat_usernames.append(row['users'])
     

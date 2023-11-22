@@ -51,6 +51,7 @@ def open_userlist():
     while True:
         users = db.get_chats(username)
 
+        print(users) #TEST
         send_to_client(str(users))
 
         userInput = recive_from_client()
@@ -81,17 +82,14 @@ def user_menu():
 def login():
     global username
     global password
-
-    #if logged in, go to list_users(), break
-    # if not, continu loop   
-    while True:
-        username = recive_from_client()
-        password = recive_from_client()
-        msg = db.login(username, password)
-        send_to_client(msg)
-        if(msg == "Logged in"):
-            user_menu()
-            break   # is break necessary here
+   
+    username = recive_from_client()
+    password = recive_from_client()
+    msg = db.login(username, password)
+    send_to_client(msg)
+    if(msg == "Logged in"):
+        user_menu()
+    
         
     
 def register():

@@ -1,4 +1,4 @@
-import json
+import ast
 global username
 global password
 global socket
@@ -21,13 +21,13 @@ def delete_message():
     pass
 
 def get_messages():
-    pass
-
-
+    messages = recive_from_server()
+    print(messages)
 
 def open_chat():
     #display all messages related to the user
     get_messages()
+    
 
     while True:
         userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Refresh\nEXIT\n")
@@ -52,16 +52,17 @@ def open_chat():
 
 def open_userlist():
     while True:
-        print("Choose the option: \n")
+        print("Choose a user:")
 
         users = recive_from_server()
-        users_array = json.loads(users)
+
+        users_array = ast.literal_eval(users)
         for count, name_pair in enumerate(users_array):
             for name in name_pair:
                 if name != username:
                     print(f"{count}. {name}")
         
-        userInput = input("EXIT\n")
+        userInput = input("Exit\n") 
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -93,18 +94,15 @@ def login():
         global username
         global password
         
-        # check if msg from server is logged in,if yes, go to next menu,
-        # if not, continu loop
-        while True:
-            username = input("Enter your username: ")
-            password = input("Enter your password: ")
-            send_to_server(username)
-            send_to_server(password)   
-            msg = recive_from_server()
-            print(msg)
-            if(msg == "Logged in"):
-                user_menu()
-                break
+        username = input("Enter your username: ")
+        password = input("Enter your password: ")
+        send_to_server(username)
+        send_to_server(password)   
+        msg = recive_from_server()
+        print(msg)
+        if(msg == "Logged in"):
+            user_menu()
+    
 
 
 def register():
