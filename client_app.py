@@ -2,6 +2,7 @@ import ast
 global username
 global password
 global socket
+global friendname
 
 # Utility functions
 def recive_from_server():
@@ -14,25 +15,39 @@ def send_to_server(message):
 
 #######################################################
 
+# it throws an error, we can't send the input successfully
 def send_message():
     userInput = input("Type your message: ")
     print(userInput)
     send_to_server(userInput)
 
+# we assume to send the index of the message to server, need to double check
 def delete_message():
-    pass
+    get_messages()
+    userInput = input("Choose the message to delete: ")
+    send_to_server(userInput)
 
 def get_messages():
     messages = recive_from_server()
-    print(messages)
+    msg_array = ast.literal_eval(messages)
+    for count, msg in msg_array:
+        print(f'{count}. {msg}')
+
+def report_user():
+    print("Do you want to report this user: ", friendname)
+    userInput = input("1.Yes\n 2.No\n")
+    send_to_server(userInput)
+
 
 def open_chat():
-    #display all messages related to the user
+    # is this the correct way to add a global variable
+    global friendname
+    friendname = recive_from_server()
+  
     get_messages()
-    
 
     while True:
-        userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Refresh\nEXIT\n")
+        userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Refresh\n4.Report the user\nEXIT\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -47,6 +62,9 @@ def open_chat():
         elif (userInput== "3"):
             send_to_server(userInput)
             get_messages()
+        elif (userInput== "4"):
+            send_to_server(userInput)
+            report_user()
         else:
             print("Wrong input. Please input the correct number.")
 
@@ -75,11 +93,32 @@ def open_userlist():
             open_chat()
         else:
             print("Wrong input. Please input the correct number.")
+
+def change_username():
+    userInput = input("New username: ")
+    print(f'Do you want to change your username to  {userInput}?')
+    userconfirm = input("1.Yes\n2.No\n")
+    if(userconfirm == "1"):
+        send_to_server("yes")
+        send_to_server(userInput)
+    else:
+        send_to_server("no")
     
+   
+def change_password():
+    userInput1 = input("New password: ")
+    userInput2 = input("Confirm your new password: ")
+    if(userInput1 == userInput2):
+        send_to_server("yes")
+        send_to_server(userInput1)    
+    else: 
+        print("Password doesn't match")
+        send_to_server("no")
+        
 
 def user_menu():
     while True:
-        userInput = input("Choose the option: \n1.Open chats\nEXIT\n")
+        userInput = input("Choose the option: \n1.Open chats\n2.Change your username\n3.Change your password\nEXIT\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -88,6 +127,12 @@ def user_menu():
         if (userInput== "1"):
             send_to_server(userInput)
             open_userlist()
+        elif(userInput== "2"):
+            send_to_server(userInput)
+            change_username()
+        elif(userInput== "3"):
+            send_to_server(userInput)
+            change_password()
         else:
             print("Wrong input. Please input the correct number.")
 

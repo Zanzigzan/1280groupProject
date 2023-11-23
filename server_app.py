@@ -24,17 +24,25 @@ def send_to_client(message):
 def send_message():
     msg = recive_from_client()
     print(msg)
-    #db.insert_message(username, friendname, msg)
+    db.insert_message(username, friendname, msg)
 
 
 def delete_message():
-    pass
+    userInput = recive_from_client()
+    db.delete_message(userInput)
 
 def get_messages():
     messages = db.get_messages(username,friendname)
     send_to_client(str(messages))
 
+def report_user():
+    userInput = recive_from_client()
+    if(userInput == "1"):
+        db.report_user(friendname, username)
+
+
 def open_chat():
+    send_to_client(friendname)
     get_messages()
 
     while True:
@@ -48,6 +56,8 @@ def open_chat():
             delete_message()
         elif (userInput== "3"):
             get_messages()
+        elif (userInput== "4"):
+            report_user()
 
 
 def open_userlist():
@@ -71,7 +81,20 @@ def open_userlist():
                 if name != username:
                     friendname = name
             open_chat()
+            
 
+def change_username():
+    userInput = recive_from_client()
+    if(userInput == "yes"):
+        newUsername = recive_from_client()
+        # call the change_username func in db
+   
+def change_password():
+    userInput = recive_from_client()
+    if(userInput == "yes"):
+        newPassword = recive_from_client()
+        # call the change_password func in db
+    
 
 def user_menu():
     while True:
@@ -82,6 +105,10 @@ def user_menu():
         
         if (userInput == "1"):
             open_userlist()
+        elif (userInput == "2"):
+            change_username()
+        elif (userInput == "3"):
+            change_password()
 
 def login():
     global username
