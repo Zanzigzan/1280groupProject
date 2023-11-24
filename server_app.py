@@ -29,7 +29,9 @@ def send_message():
 
 def delete_message():
     userInput = recive_from_client()
-    db.delete_message(userInput)
+    #convert user input, which is index of the msg, to the date of the msg
+    date = ''
+    db.delete_message(date)
 
 def get_messages():
     messages = db.get_messages(username,friendname)
@@ -81,7 +83,12 @@ def open_userlist():
                 if name != username:
                     friendname = name
             open_chat()
-            
+
+
+def create_newchat():
+    userInput = recive_from_client()
+    #
+
 
 def change_username():
     userInput = recive_from_client()
