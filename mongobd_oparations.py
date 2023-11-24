@@ -83,6 +83,8 @@ def insert_message(from_username, to_username, message):
     except Exception as e:
         print(e)
     
+def create_chat(username):
+    pass
 
 def get_chats(username):
     chat_usernames = []
@@ -94,20 +96,6 @@ def get_chats(username):
         chat_usernames.append(row['users'])
     
     return chat_usernames
-
-
-def get_AllUsers():
-    # get users from the users database 
-    pass
-
-<<<<<<< HEAD
-
-def create_chat(username, friend_username):
-=======
-def Add_friend():
->>>>>>> 37f6fc60c786ac9687b70c3ec7e3d087723cfeac
-    #add someone from the user database as a friend
-    pass
 
 
 def get_messages(username1, username2):
@@ -279,9 +267,8 @@ def update_username(username, new_username):
 # update_password("Tom1", "Tom123")
 # update_username("Tom1", "Tom")
 
-<<<<<<< HEAD
+
 # print(login("pawel", "pawel"))
-=======
+
 # delete_user("VictorCampos")
 
->>>>>>> 37f6fc60c786ac9687b70c3ec7e3d087723cfeac
