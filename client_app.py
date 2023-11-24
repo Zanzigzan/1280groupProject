@@ -104,14 +104,19 @@ def create_newchat():
 
 
 def change_username():
+    userOldName = input("Your actual username: ")
     userInput = input("New username: ")
     print(f'Do you want to change your username to  {userInput}?')
     userconfirm = input("1.Yes\n2.No\n")
     if(userconfirm == "1"):
         send_to_server("yes")
         send_to_server(userInput)
+        send_to_server(userOldName)
     else:
         send_to_server("no")
+    
+    print(recive_from_server())
+    
     
    
 def change_password():
