@@ -90,12 +90,11 @@ def get_chats(username):
     return chat_usernames
 
 
-def get_AllUsers():
-    # get users from the users database 
 
 
-def Add_friend():
+def add_friend():
     #add someone from the user database as a friend
+    pass
 
 
 def get_messages(username1, username2):
@@ -173,18 +172,44 @@ def report_user(reported_user, reporter):
         return "An error has ocurred!"
 
 
-def change_password(user_userName,newPassword):
+def update_password(username, new_password):
     users = db["users"]
-    # Change the last password for a new one 
-    try:
-        
-        
-    
-    except Exception as e:
-        print(e)
-        return "ERROR"
+    user = users.find_one({"username": username})
+
+    # Check if the user exists
+    if user:
+        try:
+            # Update the password
+            users.update_one({"username": username}, {"$set": {"password": new_password}})
+            print(f"Password for {username} updated successfully")
+            return "Password updated successfully"
+        except Exception as e:
+            print(e)
+            return "Error updating password"
+    else:
+        return "User not found"
 
 
+def update_username(username, new_username):
+    users = db["users"]
+    user = users.find_one({"username": username})
+
+    # Check if the user exists
+    if user:
+        # Check if the new username is unique
+        if not is_username_unique(new_username):
+            return "The new username is already taken"
+
+        try:
+            # Update the username
+            users.update_one({"username": username}, {"$set": {"username": new_username}})
+            print(f"Username for {username} updated successfully to {new_username}")
+            return "Username updated successfully"
+        except Exception as e:
+            print(e)
+            return "Error updating username"
+    else:
+        return "User not found"
 
 
 
@@ -211,4 +236,8 @@ def change_password(user_userName,newPassword):
 # for message in messages:
  #   print(f"{message['date']}\t{message['author']}:\t {message['message']}")
 
-report_user("Victor", "Tom")  
+# report_user("Victor", "Tom")  
+
+# update_password("Tom1", "Tom123")
+# update_username("Tom1", "Tom")
+
