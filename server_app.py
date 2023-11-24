@@ -90,17 +90,25 @@ def create_newchat():
     #
 
 
-def change_username():
+def update_username():
     userInput = recive_from_client()
     if(userInput == "yes"):
         newUsername = recive_from_client()
         # call the change_username func in db
    
-def change_password():
+def update_password():
+    print("a")
+
     userInput = recive_from_client()
     if(userInput == "yes"):
+        print("b")
+        userName = recive_from_client()
+        print("x")
         newPassword = recive_from_client()
+        print("x")
         # call the change_password func in db
+        result = db.update_password(userName, newPassword)
+        send_to_client(result)
     
 
 def user_menu():
@@ -113,9 +121,9 @@ def user_menu():
         if (userInput == "1"):
             open_userlist()
         elif (userInput == "2"):
-            change_username()
+            update_username()
         elif (userInput == "3"):
-            change_password()
+            update_password()
 
 def login():
     global username
