@@ -90,9 +90,11 @@ def get_chats(username):
     return chat_usernames
 
 
+def get_AllUsers():
+    # get users from the users database 
+    pass
 
-
-def add_friend():
+def Add_friend():
     #add someone from the user database as a friend
     pass
 

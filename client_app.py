@@ -24,23 +24,17 @@ def send_message():
 # we assume to send the index of the message to server, need to double check
 def delete_message():
     get_messages()
-    userInput = input("Choose the message to delete: ")
+    userInput = input("Type the index of the message you want to delete: ")
     send_to_server(userInput)
 
 # have trouble with converting dictionary string to list
 def get_messages():
     messages = recive_from_server()
     print(messages)
+    list = messages.split('},')
+    for x in list:
+        print(x)
 
-    msg_array = []
-    messages = messages.replace('datetime.datetime', 'datetime')
-    msg_object_array = ast.literal_eval(messages)
-
-    for item in msg_object_array:
-        msg_array.append(item['message'])
-
-    for msg in msg_array:
-        print(msg)   
 
 def report_user():
     print("Do you want to report this user: ", friendname)
@@ -54,7 +48,7 @@ def open_chat():
     # or we just change refresh to check all messages in the menu
     get_messages()
     while True:
-        userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Refresh\n4.Report the user\n5.Exit\n")
+        userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Check all messages\n4.Report the user\n5.Exit\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -110,6 +104,11 @@ def open_userlist():
         else:
             print("Wrong input. Please input the correct number.")
 
+def create_newchat():
+    userInput = input("Enter a name that you want to add as friend: ")
+    send_to_server(userInput)
+
+
 def change_username():
     userInput = input("New username: ")
     print(f'Do you want to change your username to  {userInput}?')
@@ -143,7 +142,7 @@ def change_password():
 
 def user_menu():
     while True:
-        userInput = input("Choose the option: \n1.Open chats\n2.Change your username\n3.Change your password\nEXIT\n")
+        userInput = input("Choose the option: \n1.Open chats\n2. Create a new chat\n3.Change your username\n4.Change your password\nEXIT\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -154,8 +153,11 @@ def user_menu():
             open_userlist()
         elif(userInput== "2"):
             send_to_server(userInput)
-            change_username()
+            create_newchat()
         elif(userInput== "3"):
+            send_to_server(userInput)
+            change_username()
+        elif(userInput== "4"):
             send_to_server(userInput)
             change_password()
         else:
