@@ -122,11 +122,20 @@ def change_username():
     
    
 def change_password():
+    userName = input("Enter you user name: ")
     userInput1 = input("New password: ")
     userInput2 = input("Confirm your new password: ")
+    print("x")
     if(userInput1 == userInput2):
+        print("x")
         send_to_server("yes")
-        send_to_server(userInput1)    
+        send_to_server(userName)
+        print("x")
+        send_to_server(userInput1)
+        print("x")
+
+        result = recive_from_server()
+        print(result)
     else: 
         print("Password doesn't match")
         send_to_server("no")
