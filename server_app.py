@@ -92,7 +92,10 @@ def update_username():
     userInput = recive_from_client()
     if(userInput == "yes"):
         newUsername = recive_from_client()
+        oldUsername = recive_from_client()
         # call the change_username func in db
+        call = db.update_username(oldUsername, newUsername)
+        send_to_client(call)
    
 def update_password():
     print("a")
