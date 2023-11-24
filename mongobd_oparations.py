@@ -41,6 +41,7 @@ def register(username, password):
         return "User with this username already exists!"
 
 def login(username, password):
+    print(f"Login execution starts {username} {password}")
     users = db["users"]
 
     logged_in = users.count_documents({"username": username, "password": password}) == 1
@@ -56,22 +57,27 @@ def insert_message(from_username, to_username, message):
     users = [from_username, to_username]
     
     try:
-        if chats.count_documents({"users": {"$all": users}}) == 0:
+        # Check if a chat exists, if not, create one
+        chat = chats.find_one({"users": {"$all": users}})
+        if not chat:
             chats.insert_one({
                 "users": users,
                 "messages": [],
             })
-            
+            message_index = 0  # Starting index for a new chat
+        else:
+            message_index = len(chat["messages"])  # Next index in existing chat
 
+        # Add the new message with the index
         chats.update_many(
             {"users": {"$all": users}},
             {"$push": {
-                "messages": {"$each": [{
+                "messages": {
+                    "index": message_index,
                     "author": from_username,
                     "message": message,
-                    "date": datetime.now(),
-                }]
-                }}}
+                }
+            }}
         )
         
     except Exception as e:
@@ -92,7 +98,7 @@ def get_chats(username):
 
 
 
-def add_friend():
+def create_chat(username, friend_username):
     #add someone from the user database as a friend
     pass
 
@@ -116,26 +122,26 @@ def get_messages(username1, username2):
         return []
 
 
-def delete_message(target_date_str):
+def delete_message(from_username, to_username, message_index):
     chats = db["chats"]
-
-    # Convert the target_date string to a datetime object
-    try:
-        target_date = parse(target_date_str)
-    except ValueError as e:
-        print(f"Date parsing error: {e}")
-        return
+    users = [from_username, to_username]
 
     try:
-        # Update the messages in all chats
-        result = chats.update_many(
-            {"messages.date": target_date},
-            {"$set": {"messages.$.message": "***DELETED***"}}
-        )
-
-        print(f"Number of documents modified: {result.modified_count}")
+        # Find the specific chat document
+        chat = chats.find_one({"users": {"$all": users}})
+        if chat and 0 <= message_index < len(chat["messages"]):
+            # Update the specific message at the given index
+            chat["messages"][message_index]["message"] = "***DELETED***"
+            
+            # Update the chat document in the database
+            chats.update_one({"_id": chat["_id"]}, {"$set": {"messages": chat["messages"]}})
+            print(f"Message at index {message_index} deleted.")
+        else:
+            print("Chat not found or invalid message index.")
+    
     except Exception as e:
         print(f"An error occurred: {e}")
+
 
 def delete_user(username):
     # Delete all chats related to the user
@@ -225,19 +231,20 @@ def update_username(username, new_username):
 # print(login("Tom", "Tom133"))
 
 # insert_message("Tom", "Victor", "Hello Victor! yoo test 1")
-# delete_message("2023-11-17T15:32:58.092+00:00")
-
-# print(get_chats("Tom"))
-
-# delete_message('2023-11-17 17:27:10.392000')
+# delete_message("Tom", "Victor", 0)
 
 # messages = get_messages('Tom', 'Victor')
 
 # for message in messages:
- #   print(f"{message['date']}\t{message['author']}:\t {message['message']}")
+#    print(f"{message['index']}\t{message['author']}:\t {message['message']}")
+
+# print(get_chats("Tom"))
+
+
 
 # report_user("Victor", "Tom")  
 
 # update_password("Tom1", "Tom123")
 # update_username("Tom1", "Tom")
 
+# print(login("pawel", "pawel"))
