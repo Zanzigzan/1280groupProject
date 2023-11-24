@@ -64,7 +64,7 @@ def open_userlist():
     while True:
         users = db.get_chats(username)
 
-        print(users) #TEST
+        #print(users) #TEST
         send_to_client(str(users))
 
         userInput = recive_from_client()
@@ -73,10 +73,10 @@ def open_userlist():
             break
         
         if (int(userInput) < len(users)):
-            #get the friendname here and pass in the method below
+            
             global friendname
             friendname = ""
-            name_pair = users[userInput]
+            name_pair = users[int(userInput)]
             for name in name_pair:
                 if name != username:
                     friendname = name

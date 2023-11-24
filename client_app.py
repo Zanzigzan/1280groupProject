@@ -1,4 +1,5 @@
 import ast
+import datetime
 global username
 global password
 global socket
@@ -15,7 +16,6 @@ def send_to_server(message):
 
 #######################################################
 
-# it throws an error, we can't send the input successfully
 def send_message():
     userInput = input("Type your message: ")
     print(userInput)
@@ -27,11 +27,20 @@ def delete_message():
     userInput = input("Choose the message to delete: ")
     send_to_server(userInput)
 
+# have trouble with converting dictionary string to list
 def get_messages():
     messages = recive_from_server()
-    msg_array = ast.literal_eval(messages)
-    for count, msg in msg_array:
-        print(f'{count}. {msg}')
+    print(messages)
+
+    msg_array = []
+    messages = messages.replace('datetime.datetime', 'datetime')
+    msg_object_array = ast.literal_eval(messages)
+
+    for item in msg_object_array:
+        msg_array.append(item['message'])
+
+    for msg in msg_array:
+        print(msg)   
 
 def report_user():
     print("Do you want to report this user: ", friendname)
@@ -39,20 +48,18 @@ def report_user():
     send_to_server(userInput)
 
 
-def open_chat():
-    # is this the correct way to add a global variable
-    global friendname
-    friendname = recive_from_server()
-  
-    get_messages()
 
+def open_chat():
+    # need to send to server "1" to see all messages
+    # or we just change refresh to check all messages in the menu
+    get_messages()
     while True:
-        userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Refresh\n4.Report the user\nEXIT\n")
+        userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Refresh\n4.Report the user\n5.Exit\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
             break
-        
+
         if (userInput== "1"):
             send_to_server(userInput)
             send_message()
@@ -69,18 +76,26 @@ def open_chat():
             print("Wrong input. Please input the correct number.")
 
 
-
 def open_userlist():
     while True:
-        print("Choose a user:")
+        print("Choose a friend:")
 
         users = recive_from_server()
 
-        users_array = ast.literal_eval(users)
-        for count, name_pair in enumerate(users_array):
+# this line throws an error when exit from open_chat() and re-enter this menu
+        userpair_array = ast.literal_eval(users)
+        print("abc")
+
+        user_array = []
+        global friendname
+
+        for name_pair in userpair_array:
             for name in name_pair:
                 if name != username:
-                    print(f"{count}. {name}")
+                    user_array.append(name)
+
+        for count, user in enumerate(user_array):
+            print(f'{count}. {user}')
         
         userInput = input("Exit\n") 
 
@@ -88,8 +103,9 @@ def open_userlist():
             send_to_server(userInput)
             break
         
-        if (int(userInput) < len(users)):
+        elif (int(userInput) < len(users)):
             send_to_server(userInput)
+            friendname = user_array[int(userInput)]
             open_chat()
         else:
             print("Wrong input. Please input the correct number.")
