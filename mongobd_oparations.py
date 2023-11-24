@@ -89,6 +89,15 @@ def get_chats(username):
     
     return chat_usernames
 
+
+def get_AllUsers():
+    # get users from the users database 
+
+
+def Add_friend():
+    #add someone from the user database as a friend
+
+
 def get_messages(username1, username2):
     chats = db["chats"]
     users = [username1, username2]
@@ -162,6 +171,23 @@ def report_user(reported_user, reporter):
     except Exception as e:
         print(e)
         return "An error has ocurred!"
+
+
+def change_password(user_userName,newPassword):
+    users = db["users"]
+    # Change the last password for a new one 
+    try:
+        
+        
+    
+    except Exception as e:
+        print(e)
+        return "ERROR"
+
+
+
+
+
 
 # TESTS
 # register("Tom", "Tom123")
