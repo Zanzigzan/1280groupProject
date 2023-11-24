@@ -29,7 +29,7 @@ def send_message():
 
 def delete_message():
     userInput = recive_from_client()
-    db.delete_message(userInput)
+    db.delete_message(username, friendname,int(userInput))
 
 def get_messages():
     messages = db.get_messages(username,friendname)
@@ -69,7 +69,7 @@ def open_userlist():
 
         userInput = recive_from_client()
 
-        if userInput == 'EXIT':
+        if userInput.upper() == 'EXIT':
             break
         
         if (int(userInput) < len(users)):
@@ -85,7 +85,7 @@ def open_userlist():
 
 def create_newchat():
     userInput = recive_from_client()
-    #
+    db.create_chat(userInput)
 
 
 def update_username():

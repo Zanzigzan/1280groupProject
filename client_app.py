@@ -27,11 +27,10 @@ def delete_message():
     userInput = input("Type the index of the message you want to delete: ")
     send_to_server(userInput)
 
-# have trouble with converting dictionary string to list
+# make good format
 def get_messages():
     messages = recive_from_server()
-    print(messages)
-    list = messages.split('},')
+    list = messages.split(',')
     for x in list:
         print(x)
 
@@ -73,13 +72,8 @@ def open_chat():
 def open_userlist():
     while True:
         print("Choose a friend:")
-
         users = recive_from_server()
-
-# this line throws an error when exit from open_chat() and re-enter this menu
         userpair_array = ast.literal_eval(users)
-        print("abc")
-
         user_array = []
         global friendname
 
@@ -142,7 +136,7 @@ def change_password():
 
 def user_menu():
     while True:
-        userInput = input("Choose the option: \n1.Open chats\n2. Create a new chat\n3.Change your username\n4.Change your password\nEXIT\n")
+        userInput = input("Choose the option: \n1.Open chats\n2.Create a new chat\n3.Change your username\n4.Change your password\nEXIT\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
