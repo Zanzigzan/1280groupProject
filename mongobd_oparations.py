@@ -96,9 +96,16 @@ def get_chats(username):
     return chat_usernames
 
 
+def get_AllUsers():
+    # get users from the users database 
+    pass
 
+<<<<<<< HEAD
 
 def create_chat(username, friend_username):
+=======
+def Add_friend():
+>>>>>>> 37f6fc60c786ac9687b70c3ec7e3d087723cfeac
     #add someone from the user database as a friend
     pass
 
@@ -144,12 +151,37 @@ def delete_message(from_username, to_username, message_index):
 
 
 def delete_user(username):
+    chats = db["chats"]
+    users = db["users"]
+
     # Delete all chats related to the user
-    
-    
+    try:
+        result = chats.delete_many({
+            "users" : username
+        })
+
+        if result.deleted_count > 0:
+            print(f"Chats for {username} deleted successfully") 
+        else:
+            print (f"No chats found for {username}")
+        
+    except Exception as e:
+        print(e)
+        return "An error has ocurred!"
+
     # Delete the user
-    
-    pass
+
+    try:
+        result = users.delete_one({
+            "username" : username
+        })
+        if result.deleted_count > 0:
+            return f"The user: {username} was deleted sucessfully!"
+        else: 
+            return f"The user: {username} wasn't deleted"
+    except Exception as e: 
+        print(e)
+        return "An error has ocurred!"
 
 def report_user(reported_user, reporter):
     reports = db["reports"]
@@ -247,4 +279,9 @@ def update_username(username, new_username):
 # update_password("Tom1", "Tom123")
 # update_username("Tom1", "Tom")
 
+<<<<<<< HEAD
 # print(login("pawel", "pawel"))
+=======
+# delete_user("VictorCampos")
+
+>>>>>>> 37f6fc60c786ac9687b70c3ec7e3d087723cfeac

@@ -81,7 +81,12 @@ def open_userlist():
                 if name != username:
                     friendname = name
             open_chat()
-            
+
+
+def create_newchat():
+    userInput = recive_from_client()
+    #
+
 
 def update_username():
     userInput = recive_from_client()
