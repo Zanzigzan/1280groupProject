@@ -138,12 +138,37 @@ def delete_message(target_date_str):
         print(f"An error occurred: {e}")
 
 def delete_user(username):
+    chats = db["chats"]
+    users = db["users"]
+
     # Delete all chats related to the user
-    
-    
+    try:
+        result = chats.delete_many({
+            "users" : username
+        })
+
+        if result.deleted_count > 0:
+            print(f"Chats for {username} deleted successfully") 
+        else:
+            print (f"No chats found for {username}")
+        
+    except Exception as e:
+        print(e)
+        return "An error has ocurred!"
+
     # Delete the user
-    
-    pass
+
+    try:
+        result = users.delete_one({
+            "username" : username
+        })
+        if result.deleted_count > 0:
+            return f"The user: {username} was deleted sucessfully!"
+        else: 
+            return f"The user: {username} wasn't deleted"
+    except Exception as e: 
+        print(e)
+        return "An error has ocurred!"
 
 def report_user(reported_user, reporter):
     reports = db["reports"]
@@ -240,4 +265,6 @@ def update_username(username, new_username):
 
 # update_password("Tom1", "Tom123")
 # update_username("Tom1", "Tom")
+
+# delete_user("VictorCampos")
 
