@@ -29,9 +29,7 @@ def send_message():
 
 def delete_message():
     userInput = recive_from_client()
-    #convert user input, which is index of the msg, to the date of the msg
-    date = ''
-    db.delete_message(date)
+    db.delete_message(userInput)
 
 def get_messages():
     messages = db.get_messages(username,friendname)

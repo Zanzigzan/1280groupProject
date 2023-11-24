@@ -31,16 +31,10 @@ def delete_message():
 def get_messages():
     messages = recive_from_server()
     print(messages)
+    list = messages.split('},')
+    for x in list:
+        print(x)
 
-    msg_array = []
-    messages = messages.replace('datetime.datetime', 'datetime')
-    msg_object_array = ast.literal_eval(messages)
-
-    for item in msg_object_array:
-        msg_array.append(item['message'])
-
-    for msg in msg_array:
-        print(msg)   
 
 def report_user():
     print("Do you want to report this user: ", friendname)
@@ -54,7 +48,7 @@ def open_chat():
     # or we just change refresh to check all messages in the menu
     get_messages()
     while True:
-        userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Refresh\n4.Report the user\n5.Exit\n")
+        userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Check all messages\n4.Report the user\n5.Exit\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
