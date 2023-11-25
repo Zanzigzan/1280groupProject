@@ -51,11 +51,11 @@ def open_chat():
         if userInput.upper() == 'EXIT':
             break
         if (userInput== "1"):
-            send_message()
+            get_messages() 
         elif (userInput== "2"):
-            delete_message()
+            send_message()
         elif (userInput== "3"):
-            get_messages()
+            delete_message()
         elif (userInput== "4"):
             report_user()
 
