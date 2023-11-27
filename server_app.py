@@ -33,7 +33,7 @@ def send_message():
 
 def delete_message():
     userInput = recive_from_client()
-    db.delete_message(userInput)
+    db.delete_message(username, friendname,int(userInput))
 
 def get_messages():
     messages = db.get_messages(username,friendname)
@@ -55,11 +55,11 @@ def open_chat():
         if userInput.upper() == 'EXIT':
             break
         if (userInput== "1"):
-            send_message()
+            get_messages() 
         elif (userInput== "2"):
-            delete_message()
+            send_message()
         elif (userInput== "3"):
-            get_messages()
+            delete_message()
         elif (userInput== "4"):
             report_user()
 
@@ -72,7 +72,7 @@ def open_userlist():
 
         userInput = recive_from_client()
 
-        if userInput == 'EXIT':
+        if userInput.upper() == 'EXIT':
             break
         
         if (int(userInput) < len(users)):
@@ -88,14 +88,17 @@ def open_userlist():
 
 def create_newchat():
     userInput = recive_from_client()
-    #
+    db.create_chat(userInput)
 
 
 def update_username():
     userInput = recive_from_client()
     if(userInput == "yes"):
         newUsername = recive_from_client()
+        oldUsername = recive_from_client()
         # call the change_username func in db
+        call = db.update_username(oldUsername, newUsername)
+        send_to_client(call)
    
 def update_password():
     userInput = recive_from_client()

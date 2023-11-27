@@ -1,6 +1,5 @@
 import ast
 import time
-import datetime
 global username
 global password
 global socket
@@ -26,22 +25,23 @@ def send_to_server(message):
 
 def send_message():
     userInput = input("Type your message: ")
-    print(userInput)
     send_to_server(userInput)
+    print(f'{userInput} is sent to {friendname} successfully!')
 
-# we assume to send the index of the message to server, need to double check
+
 def delete_message():
     get_messages()
     userInput = input("Type the index of the message you want to delete: ")
     send_to_server(userInput)
+    print("Your message is successfully deleted")
 
-# have trouble with converting dictionary string to list
+# !!!! better to speficy the sender and receiver in database
 def get_messages():
     messages = recive_from_server()
-    print(messages)
-    list = messages.split('},')
-    for x in list:
-        print(x)
+    str = messages[1:-1]
+    msg_list = str.split(',')
+    for message_object in msg_list:
+        print(message_object)
 
 
 def report_user():
@@ -50,13 +50,10 @@ def report_user():
     send_to_server(userInput)
 
 
-
 def open_chat():
-    # need to send to server "1" to see all messages
-    # or we just change refresh to check all messages in the menu
     get_messages()
     while True:
-        userInput = input("Choose the option: \n1.Send a message\n2.Delete a message\n3.Check all messages\n4.Report the user\n5.Exit\n")
+        userInput = input("Choose the option: \n1.Check all messages\n2.Send a message\n3.Delete a message\n4.Report the user\n5.Exit\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -64,13 +61,13 @@ def open_chat():
 
         if (userInput== "1"):
             send_to_server(userInput)
-            send_message()
+            get_messages()
         elif (userInput== "2"):
             send_to_server(userInput)
-            delete_message()
+            send_message()      
         elif (userInput== "3"):
             send_to_server(userInput)
-            get_messages()
+            delete_message()
         elif (userInput== "4"):
             send_to_server(userInput)
             report_user()
@@ -80,13 +77,12 @@ def open_chat():
 
 def open_userlist():
     while True:
-        print("Choose a friend:")
-
         users = recive_from_server()
-
-# this line throws an error when exit from open_chat() and re-enter this menu
         userpair_array = ast.literal_eval(users)
-        print("abc")
+        if(len(userpair_array) == 0):
+            print("You don't have any frined or chats yet!")
+        else:
+            print("Choose a friend:")
 
         user_array = []
         global friendname
@@ -118,14 +114,19 @@ def create_newchat():
 
 
 def change_username():
+    userOldName = input("Your actual username: ")
     userInput = input("New username: ")
     print(f'Do you want to change your username to  {userInput}?')
     userconfirm = input("1.Yes\n2.No\n")
     if(userconfirm == "1"):
         send_to_server("yes")
         send_to_server(userInput)
+        send_to_server(userOldName)
     else:
         send_to_server("no")
+    
+    print(recive_from_server())
+    
     
    
 def change_password():
@@ -146,7 +147,7 @@ def change_password():
 
 def user_menu():
     while True:
-        userInput = input("Choose the option: \n1.Open chats\n2. Create a new chat\n3.Change your username\n4.Change your password\nEXIT\n")
+        userInput = input("Choose the option: \n1.Open chats\n2.Create a new chat\n3.Change your username\n4.Change your password\nEXIT\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -168,7 +169,6 @@ def user_menu():
             print("Wrong input. Please input the correct number.")
 
 def login():
-        #add username to be global, to be used in open_listusers()
         global username
         global password
         
