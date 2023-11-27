@@ -35,13 +35,19 @@ def delete_message():
     send_to_server(userInput)
     print("Your message is successfully deleted")
 
-# !!!! better to speficy the sender and receiver in database
 def get_messages():
     messages = recive_from_server()
-    str = messages[1:-1]
-    msg_list = str.split(',')
-    for message_object in msg_list:
-        print(message_object)
+
+    try:
+        userpair_array = ast.literal_eval(messages)
+        index = "Index"
+        sender = "Sender"
+        message = "Message"
+        print(f'%-8s%-9s%-20s' %(index, sender, message))
+        for message in userpair_array:
+            print(f"{message['index']}\t{message['author']}:\t {message['message']}")
+    except ValueError as e:
+        print(f"Error parsing data: {e}")
 
 
 def report_user():
@@ -176,11 +182,9 @@ def login():
         global password
         
         username = input("Enter your username: ")
-        send_to_server(username)
-        
         password = input("Enter your password: ")
-        send_to_server(password)
-
+        send_to_server(username)
+        send_to_server(password)   
         msg = recive_from_server()
         print(msg)
         if(msg == "Logged in"):

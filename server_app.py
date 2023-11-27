@@ -28,7 +28,8 @@ def send_to_client(message):
 def send_message():
     msg = recive_from_client()
     print(msg)
-    db.insert_message(username, friendname, msg)
+    res = db.insert_message(username, friendname, msg)
+    send_to_client(res)
 
 
 def delete_message():
@@ -37,7 +38,7 @@ def delete_message():
 
 def get_messages():
     messages = db.get_messages(username,friendname)
-    send_to_client(str(messages))
+    return str(messages)
 
 def report_user():
     userInput = recive_from_client()
@@ -46,8 +47,9 @@ def report_user():
 
 
 def open_chat():
-    send_to_client(friendname)
-    get_messages()
+    messages = get_messages()
+
+    send_to_client(messages)
 
     while True:
         userInput = recive_from_client()
