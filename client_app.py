@@ -53,7 +53,7 @@ def report_user():
 def open_chat():
     get_messages()
     while True:
-        userInput = input("Choose the option: \n1.Check all messages\n2.Send a message\n3.Delete a message\n4.Report the user\n5.Exit\n")
+        userInput = input("Choose the option: \n1.Check all messages\n2.Send a message\n3.Delete a message\n4.Report the user\nEXIT\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -111,6 +111,9 @@ def open_userlist():
 def create_newchat():
     userInput = input("Enter a name that you want to add as friend: ")
     send_to_server(userInput)
+    
+    res = recive_from_server()
+    print(res)
 
 
 def change_username():

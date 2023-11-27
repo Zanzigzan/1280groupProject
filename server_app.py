@@ -88,7 +88,9 @@ def open_userlist():
 
 def create_newchat():
     userInput = recive_from_client()
-    db.create_chat(username,userInput)
+    
+    res = db.create_chat(username,userInput)
+    send_to_client(res)
 
 
 def update_username():
@@ -120,8 +122,10 @@ def user_menu():
         if (userInput == "1"):
             open_userlist()
         elif (userInput == "2"):
-            update_username()
+            create_newchat()
         elif (userInput == "3"):
+            update_username()
+        elif (userInput == "4"):
             update_password()
 
 def login():
