@@ -188,29 +188,34 @@ def delete_user(username):
 
 def report_user(reported_user, reporter):
     reports = db["reports"]
-    
+
     try:
         # Create a row if it does not exist
-        if reports.count_documents({"reported user": reported_user}) == 0:
+        if reports.count_documents({"reported_user": reported_user}) == 0:
             reports.insert_one({
-                "reported user": reported_user,
+                "reported_user": reported_user,
                 "reports": [],
             })
 
         # Add reporter to reports if it is not already there 
-        if not (reports.find_one({"reported user": reported_user,"reports": reporter})):
+        if not reports.find_one({"reported_user": reported_user, "reports": reporter}):
             reports.update_one(
-                {"reported user": reported_user},
+                {"reported_user": reported_user},
                 {"$push": {"reports": reporter}}
             )
-        
-        # If at least 3 people reported delete this user
-        if len(reports.get("reports", [])) == 3:
+
+        # Retrieve the updated document and check the length of reports
+        reported_user_doc = reports.find_one({"reported_user": reported_user})
+        if reported_user_doc and len(reported_user_doc.get("reports", [])) >= 3:
             delete_user(reported_user)
+            return  "Report successful. User has been deleted"
             
     except Exception as e:
         print(e)
-        return "An error has ocurred!"
+        return "An error has occurred!"
+
+    return "Report successful"
+
 
 
 def update_password(username, new_password):

@@ -51,8 +51,8 @@ def get_messages():
 
 
 def report_user():
-    print("Do you want to report this user: ", friendname)
-    userInput = input("1.Yes\n 2.No\n")
+    print("Do you want to report this user:", friendname)
+    userInput = input("1.Yes\n2.No\n")
     send_to_server(userInput)
 
 
@@ -64,7 +64,7 @@ def open_chat():
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
             break
-
+        
         if (userInput== "1"):
             send_to_server(userInput)
             get_messages()
