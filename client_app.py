@@ -1,4 +1,5 @@
 import ast
+import time
 global username
 global password
 global socket
@@ -27,13 +28,19 @@ def delete_message():
     send_to_server(userInput)
     print("Your message is successfully deleted")
 
-# !!!! better to speficy the sender and receiver in database
 def get_messages():
     messages = recive_from_server()
-    str = messages[1:-1]
-    msg_list = str.split(',')
-    for message_object in msg_list:
-        print(message_object)
+
+    try:
+        userpair_array = ast.literal_eval(messages)
+        index = "Index"
+        sender = "Sender"
+        message = "Message"
+        print(f'%-8s%-9s%-20s' %(index, sender, message))
+        for message in userpair_array:
+            print(f"{message['index']}\t{message['author']}:\t {message['message']}")
+    except ValueError as e:
+        print(f"Error parsing data: {e}")
 
 
 def report_user():
@@ -45,7 +52,7 @@ def report_user():
 def open_chat():
     get_messages()
     while True:
-        userInput = input("Choose the option: \n1.Check all messages\n2.Send a message\n3.Delete a message\n4.Report the user\n5.Exit\n")
+        userInput = input("Choose the option: \n1.Refresh all messages\n2.Send a message\n3.Delete a message\n4.Report the user\n5.Exit\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -169,8 +176,9 @@ def login():
         global password
         
         username = input("Enter your username: ")
-        password = input("Enter your password: ")
         send_to_server(username)
+
+        password = input("Enter your password: ")
         send_to_server(password)   
         msg = recive_from_server()
         print(msg)
@@ -186,7 +194,9 @@ def register():
         confirmPassword = input("Confirm your password: ")
         if(password == confirmPassword):
             send_to_server(username)
+            time.sleep(2)
             send_to_server(password)
+            
             msg = recive_from_server()
             print(msg)
             if(msg == "User created successfully"):
