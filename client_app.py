@@ -26,14 +26,17 @@ def send_to_server(message):
 def send_message():
     userInput = input("Type your message: ")
     send_to_server(userInput)
-    print(f'{userInput} is sent to {friendname} successfully!')
+
+    res = recive_from_server()
+    print(res)
 
 
 def delete_message():
-    get_messages()
     userInput = input("Type the index of the message you want to delete: ")
     send_to_server(userInput)
-    print("Your message is successfully deleted")
+    
+    res = recive_from_server()
+    print(res)
 
 def get_messages():
     messages = recive_from_server()
@@ -48,7 +51,7 @@ def get_messages():
             message = "Message"
             print(f'%-8s%-9s%-20s' %(index, sender, message))
             for message in msg_array:
-                print(f"{message['index']}\t{message['author']}:\t {message['message']}")
+                print(f"{message['index']}\t{message['author']}\t {message['message']}")
         
     except ValueError as e:
         print(f"Error parsing data: {e}")
@@ -63,8 +66,9 @@ def report_user():
 
 
 def open_chat():
-    get_messages()
     while True:
+        get_messages()
+
         userInput = input("\nChoose the option: \n1.Check all messages\n2.Send a message\n3.Delete a message\n*EXIT*\n")
 
         if userInput.upper() == 'EXIT':
@@ -73,7 +77,6 @@ def open_chat():
         
         if (userInput== "1"):
             send_to_server(userInput)
-            get_messages()
         elif (userInput== "2"):
             send_to_server(userInput)
             send_message()      
@@ -81,6 +84,7 @@ def open_chat():
             send_to_server(userInput)
             delete_message()
         else:
+            send_to_server(userInput)
             print("Wrong input. Please input the correct number.")
 
 

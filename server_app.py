@@ -34,7 +34,9 @@ def send_message():
 
 def delete_message():
     userInput = recive_from_client()
-    db.delete_message(username, friendname,int(userInput))
+    
+    res = db.delete_message(username, friendname,int(userInput))
+    send_to_client(res)
 
 def get_messages():
     messages = db.get_messages(username,friendname)
@@ -48,17 +50,16 @@ def report_user():
 
 
 def open_chat():
-    messages = get_messages()
-
-    send_to_client(messages)
-
     while True:
+        messages = get_messages()
+
+        send_to_client(messages)
+
         userInput = recive_from_client()
 
         if userInput.upper() == 'EXIT':
             break
-        if (userInput== "1"):
-            get_messages() 
+
         elif (userInput== "2"):
             send_message()
         elif (userInput== "3"):

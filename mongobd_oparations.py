@@ -79,9 +79,11 @@ def insert_message(from_username, to_username, message):
                 }
             }}
         )
+        return "Message sent succesfully!"
         
     except Exception as e:
-        print(e)
+        print(f"Error sending a message: {e}")
+        return f"Error sending a message: {e}"
     
 def create_chat(from_user,to_user):
     chats = db["chats"]
@@ -146,11 +148,14 @@ def delete_message(from_username, to_username, message_index):
             # Update the chat document in the database
             chats.update_one({"_id": chat["_id"]}, {"$set": {"messages": chat["messages"]}})
             print(f"Message at index {message_index} deleted.")
+            return f"Message at index {message_index} deleted."
         else:
             print("Chat not found or invalid message index.")
+            return "Chat not found or invalid message index."
     
     except Exception as e:
         print(f"An error occurred: {e}")
+        return f"An error occurred: {e}"
 
 
 def delete_user(username):
