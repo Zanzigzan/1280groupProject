@@ -83,8 +83,23 @@ def insert_message(from_username, to_username, message):
     except Exception as e:
         print(e)
     
-def create_chat(username):
-    pass
+def create_chat(from_user,to_user):
+    chats = db["chats"]
+    users = [from_user, to_user]
+    try:
+        chat = chats.find_one({"users": {"$all": users}})
+        if not chat:
+            chats.insert_one({
+                "users": users,
+                "messages": [],
+            })
+            return "Chat created sucessfully!"
+
+    except Exception as e:
+        print(e)
+        return "An error has ocurred!"
+    
+
 
 def get_chats(username):
     chat_usernames = []
@@ -191,7 +206,7 @@ def report_user(reported_user, reporter):
         
         # If at least 3 people reported delete this user
         if len(reports.get("reports", [])) == 3:
-            delete_user()
+            delete_user(reported_user)
             
     except Exception as e:
         print(e)
@@ -271,4 +286,6 @@ def update_username(username, new_username):
 # print(login("pawel", "pawel"))
 
 # delete_user("VictorCampos")
+
+
 

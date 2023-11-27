@@ -85,7 +85,7 @@ def open_userlist():
 
 def create_newchat():
     userInput = recive_from_client()
-    db.create_chat(userInput)
+    db.create_chat(username,userInput)
 
 
 def update_username():
