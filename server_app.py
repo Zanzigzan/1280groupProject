@@ -1,4 +1,5 @@
 import mongobd_oparations as db
+import time
 
 global socket
 global c_address
@@ -14,10 +15,13 @@ def recive_from_client():
     
     return message
 
+
 def send_to_client(message):
     print(f'{c_address} Message \"{message}\" sent')
     
     socket.send(message.encode('utf-8'))
+    
+    time.sleep(0.2)
     
 #############################################
 
@@ -66,7 +70,6 @@ def open_userlist():
     while True:
         users = db.get_chats(username)
 
-        #print(users) #TEST
         send_to_client(str(users))
 
         userInput = recive_from_client()
@@ -87,7 +90,7 @@ def open_userlist():
 
 def create_newchat():
     userInput = recive_from_client()
-    db.create_chat(userInput)
+    db.create_chat(username,userInput)
 
 
 def update_username():
@@ -100,15 +103,10 @@ def update_username():
         send_to_client(call)
    
 def update_password():
-    print("a")
-
     userInput = recive_from_client()
     if(userInput == "yes"):
-        print("b")
         userName = recive_from_client()
-        print("x")
         newPassword = recive_from_client()
-        print("x")
         # call the change_password func in db
         result = db.update_password(userName, newPassword)
         send_to_client(result)

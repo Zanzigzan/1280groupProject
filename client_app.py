@@ -8,11 +8,18 @@ global friendname
 # Utility functions
 def recive_from_server():
     message = socket.recv(1024).decode('utf-8')
-
+    
+    # print(f"Recived:{message}") # TEST
+    
     return message
 
+
 def send_to_server(message):
+    # print(f"Sent:{full_message}")# TEST
+    
     socket.send(message.encode('utf-8'))
+    
+    time.sleep(0.2)
 
 #######################################################
 
@@ -132,14 +139,10 @@ def change_password():
     userName = input("Enter you user name: ")
     userInput1 = input("New password: ")
     userInput2 = input("Confirm your new password: ")
-    print("x")
     if(userInput1 == userInput2):
-        print("x")
         send_to_server("yes")
         send_to_server(userName)
-        print("x")
         send_to_server(userInput1)
-        print("x")
 
         result = recive_from_server()
         print(result)
@@ -176,9 +179,8 @@ def login():
         global password
         
         username = input("Enter your username: ")
-        send_to_server(username)
-
         password = input("Enter your password: ")
+        send_to_server(username)
         send_to_server(password)   
         msg = recive_from_server()
         print(msg)
@@ -194,6 +196,9 @@ def register():
         confirmPassword = input("Confirm your password: ")
         if(password == confirmPassword):
             send_to_server(username)
+            
+            
+            
             send_to_server(password)
             msg = recive_from_server()
             print(msg)
