@@ -39,13 +39,17 @@ def get_messages():
     messages = recive_from_server()
 
     try:
-        userpair_array = ast.literal_eval(messages)
-        index = "Index"
-        sender = "Sender"
-        message = "Message"
-        print(f'%-8s%-9s%-20s' %(index, sender, message))
-        for message in userpair_array:
-            print(f"{message['index']}\t{message['author']}:\t {message['message']}")
+        msg_array = ast.literal_eval(messages)
+        if(len(msg_array) == 0):
+            print("You dont't have any messages yet!\n")
+        else:
+            index = "Index"
+            sender = "Sender"
+            message = "Message"
+            print(f'%-8s%-9s%-20s' %(index, sender, message))
+            for message in msg_array:
+                print(f"{message['index']}\t{message['author']}:\t {message['message']}")
+        
     except ValueError as e:
         print(f"Error parsing data: {e}")
 
