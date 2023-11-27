@@ -65,7 +65,7 @@ def report_user():
 def open_chat():
     get_messages()
     while True:
-        userInput = input("Choose the option: \n1.Check all messages\n2.Send a message\n3.Delete a message\nEXIT\n")
+        userInput = input("\nChoose the option: \n1.Check all messages\n2.Send a message\n3.Delete a message\n*EXIT*\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -159,7 +159,7 @@ def change_password():
 
 def user_menu():
     while True:
-        userInput = input("Choose the option: \n1.Open chats\n2.Create a new chat\n3.Change your username\n4.Change your password\n5.Report the user\nEXIT\n")
+        userInput = input("\nChoose the option: \n1.Open chats\n2.Create a new chat\n3.Change your username\n4.Change your password\n5.Report the user\n*EXIT*\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -219,7 +219,7 @@ def register():
 
 def Menu():
     while True:
-        userInput = input("Welcome to Coucou! Choose the option: \n1.Register\n2.Log In\nEXIT\n")
+        userInput = input("\nWelcome to Coucou! Choose the option: \n1.Register\n2.Log In\n*EXIT*\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
