@@ -194,9 +194,7 @@ def register():
         confirmPassword = input("Confirm your password: ")
         if(password == confirmPassword):
             send_to_server(username)
-            time.sleep(2)
             send_to_server(password)
-            
             msg = recive_from_server()
             print(msg)
             if(msg == "User created successfully"):
