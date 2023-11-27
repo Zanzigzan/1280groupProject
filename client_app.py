@@ -89,9 +89,9 @@ def open_userlist():
         users = recive_from_server()
         userpair_array = ast.literal_eval(users)
         if(len(userpair_array) == 0):
-            print("You don't have any frined or chats yet!")
+            print("\nYou don't have any frined or chats yet!")
         else:
-            print("Choose a friend:")
+            print("\nChoose a friend:")
 
         user_array = []
         global friendname
@@ -104,7 +104,7 @@ def open_userlist():
         for count, user in enumerate(user_array):
             print(f'{count}. {user}')
         
-        userInput = input("Exit\n") 
+        userInput = input("*EXIT*\n") 
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -115,7 +115,7 @@ def open_userlist():
             friendname = user_array[int(userInput)]
             open_chat()
         else:
-            print("Wrong input. Please input the correct number.")
+            print("\nWrong input. Please input the correct number.")
 
 def create_newchat():
     userInput = input("Enter a name that you want to add as friend: ")
