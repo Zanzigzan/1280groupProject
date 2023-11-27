@@ -55,15 +55,17 @@ def get_messages():
 
 
 def report_user():
-    print("Do you want to report this user:", friendname)
-    userInput = input("1.Yes\n2.No\n")
+    userInput = input("Type name of a user you would like to report: ")
     send_to_server(userInput)
+    
+    res = recive_from_server()
+    print(res)
 
 
 def open_chat():
     get_messages()
     while True:
-        userInput = input("Choose the option: \n1.Check all messages\n2.Send a message\n3.Delete a message\n4.Report the user\nEXIT\n")
+        userInput = input("Choose the option: \n1.Check all messages\n2.Send a message\n3.Delete a message\nEXIT\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -78,9 +80,6 @@ def open_chat():
         elif (userInput== "3"):
             send_to_server(userInput)
             delete_message()
-        elif (userInput== "4"):
-            send_to_server(userInput)
-            report_user()
         else:
             print("Wrong input. Please input the correct number.")
 
@@ -160,7 +159,7 @@ def change_password():
 
 def user_menu():
     while True:
-        userInput = input("Choose the option: \n1.Open chats\n2.Create a new chat\n3.Change your username\n4.Change your password\nEXIT\n")
+        userInput = input("Choose the option: \n1.Open chats\n2.Create a new chat\n3.Change your username\n4.Change your password\n5.Report the user\nEXIT\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
@@ -178,6 +177,9 @@ def user_menu():
         elif(userInput== "4"):
             send_to_server(userInput)
             change_password()
+        elif(userInput== "5"):
+            send_to_server(userInput)
+            report_user()
         else:
             print("Wrong input. Please input the correct number.")
 

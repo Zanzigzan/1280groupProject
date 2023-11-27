@@ -156,35 +156,44 @@ def delete_message(from_username, to_username, message_index):
 def delete_user(username):
     chats = db["chats"]
     users = db["users"]
+    reports = db["reports"]
 
     # Delete all chats related to the user
     try:
-        result = chats.delete_many({
-            "users" : username
-        })
-
+        result = chats.delete_many({"users": username})
         if result.deleted_count > 0:
-            print(f"Chats for {username} deleted successfully") 
+            print(f"Chats for {username} deleted successfully.")
         else:
-            print (f"No chats found for {username}")
-        
+            print(f"No chats found for {username}.")
+
     except Exception as e:
         print(e)
-        return "An error has ocurred!"
+        return "An error has occurred in deleting chats!"
 
     # Delete the user
-
     try:
-        result = users.delete_one({
-            "username" : username
-        })
+        result = users.delete_one({"username": username})
         if result.deleted_count > 0:
-            return f"The user: {username} was deleted sucessfully!"
-        else: 
-            return f"The user: {username} wasn't deleted"
-    except Exception as e: 
+            print(f"The user {username} was deleted successfully.")
+        else:
+            print(f"The user {username} wasn't deleted.")
+    except Exception as e:
         print(e)
-        return "An error has ocurred!"
+        return "An error has occurred in deleting the user!"
+
+    # Delete reports related to the user
+    try:
+        result = reports.delete_many({"reported_user": username})
+        if result.deleted_count > 0:
+            print(f"Reports for {username} deleted successfully.")
+        else:
+            print(f"No reports found for {username}.")
+    except Exception as e:
+        print(e)
+        return "An error has occurred in deleting reports!"
+
+    return f"All data for {username} has been deleted successfully."
+
 
 def report_user(reported_user, reporter):
     reports = db["reports"]

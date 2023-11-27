@@ -41,9 +41,10 @@ def get_messages():
     return str(messages)
 
 def report_user():
-    userInput = recive_from_client()
-    if(userInput == "1"):
-        db.report_user(friendname, username)
+    userToBeReported = recive_from_client()
+    
+    res = db.report_user(userToBeReported, username)
+    send_to_client(res)
 
 
 def open_chat():
@@ -62,8 +63,6 @@ def open_chat():
             send_message()
         elif (userInput== "3"):
             delete_message()
-        elif (userInput== "4"):
-            report_user()
 
 
 def open_userlist():
@@ -129,6 +128,8 @@ def user_menu():
             update_username()
         elif (userInput == "4"):
             update_password()
+        elif (userInput == "5"):
+            report_user()
 
 def login():
     global username
