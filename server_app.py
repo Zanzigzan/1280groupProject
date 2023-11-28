@@ -96,21 +96,31 @@ def create_newchat():
 
 
 def update_username():
+    global username
+    
     userInput = recive_from_client()
     if(userInput == "yes"):
         newUsername = recive_from_client()
-        oldUsername = recive_from_client()
-        # call the change_username func in db
-        call = db.update_username(oldUsername, newUsername)
-        send_to_client(call)
+        
+        result = db.update_username(username, newUsername)
+        
+        if (result == "Username updated successfully"):
+            username = newUsername
+        
+        send_to_client(result)
    
 def update_password():
+    global password
+    
     userInput = recive_from_client()
     if(userInput == "yes"):
-        userName = recive_from_client()
         newPassword = recive_from_client()
-        # call the change_password func in db
-        result = db.update_password(userName, newPassword)
+
+        result = db.update_password(username, newPassword)
+        
+        if result == "Password updated successfully":
+            password = newPassword
+        
         send_to_client(result)
     
 

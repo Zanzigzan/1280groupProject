@@ -23,6 +23,14 @@ def userExists(username):
 # Functionality
 def register(username, password):
     users = db["users"]
+    
+    if not (3 < len(username) and len(username) < 10):
+        print("User {new_username} does not meet the requirements")
+        return "Your username have to be between 3 to 10 characters"
+    
+    if not (4 < len(password) and len(password) < 12):
+        print("Password {password} does not meet the requirements")
+        return "Your password have to be between 4 to 12 characters"
 
     if (is_username_unique(username)):
         try:
@@ -93,7 +101,7 @@ def create_chat(from_user,to_user):
     users = [from_user, to_user]
     
     if not userExists(to_user):
-        return "User does not exists"
+        return "User does not exist"
     
     try:
         chat = chats.find_one({"users": {"$all": users}})
@@ -252,6 +260,10 @@ def report_user(reported_user, reporter):
 def update_password(username, new_password):
     users = db["users"]
     user = users.find_one({"username": username})
+    
+    if not (4 < len(new_password) and len(new_password) < 12):
+        print("Password {password} does not meet the requirements")
+        return "Your password have to be between 4 to 12 characters"
 
     # Check if the user exists
     if user:
@@ -269,19 +281,30 @@ def update_password(username, new_password):
 
 def update_username(username, new_username):
     users = db["users"]
-    user = users.find_one({"username": username})
+    chats = db["chats"]
     
     if not userExists(username):
-        print(f"I can not change the name of {username} User does not exist.")
-        return f"I can not change the name of {username} User does not exist."
+        print(f"I can not change the name of {username}. User does not exist.")
+        return f"I can not change the name of {username}. User does not exist."
 
     if userExists(new_username):
-        print("User with this username already exists")
-        return "User with this username already exists"
+        print(f"User with {new_username} username already exists")
+        return f"User with {new_username} username already exists"
     
-    # Check if the new username is unique
-    if not is_username_unique(new_username):
-        return "The new username is already taken"
+    if not (3 < len(new_username) and len(new_username) < 10):
+        print("User {new_username} does not meet the requirements")
+        return "Your username have to be between 3 to 10 characters"
+
+    try:
+        # Find chats that include the old username and update them
+        chats.update_many(
+            {"users": username},
+            {"$set": {"users.$": new_username}}
+        )
+        print(f"Username updated in chats successfully from {username} to {new_username}")
+    except Exception as e:
+        print(e)
+        return "Error updating username in chats"
 
     try:
         # Update the username
