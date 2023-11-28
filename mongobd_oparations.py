@@ -16,6 +16,9 @@ def is_username_unique(username):
     
     return users.count_documents({"username": username}) == 0
 
+def userExists(username):
+    users = db["users"]
+    return users.count_documents({"username": username}) > 0
 
 # Functionality
 def register(username, password):
@@ -88,6 +91,10 @@ def insert_message(from_username, to_username, message):
 def create_chat(from_user,to_user):
     chats = db["chats"]
     users = [from_user, to_user]
+    
+    if not userExists(to_user):
+        return "User does not exists"
+    
     try:
         chat = chats.find_one({"users": {"$all": users}})
         if not chat:
@@ -137,6 +144,9 @@ def get_messages(username1, username2):
 def delete_message(from_username, to_username, message_index):
     chats = db["chats"]
     users = [from_username, to_username]
+    
+    if not userExists(from_username) or not userExists(to_username):
+        return "Error one of the users does not exists"
 
     try:
         # Find the specific chat document
@@ -162,6 +172,9 @@ def delete_user(username):
     chats = db["chats"]
     users = db["users"]
     reports = db["reports"]
+    
+    if not userExists(username):
+        return "An error has occurred in deleting the user. I could not find the user."
 
     # Delete all chats related to the user
     try:
@@ -202,6 +215,10 @@ def delete_user(username):
 
 def report_user(reported_user, reporter):
     reports = db["reports"]
+    
+    if not userExists(reported_user):
+        print(f"I could not report the user named {reported_user}. User does not exist.")
+        return f"I could not report the user named {reported_user}. User does not exist."
 
     try:
         # Create a row if it does not exist
@@ -253,24 +270,27 @@ def update_password(username, new_password):
 def update_username(username, new_username):
     users = db["users"]
     user = users.find_one({"username": username})
+    
+    if not userExists(username):
+        print(f"I can not change the name of {username} User does not exist.")
+        return f"I can not change the name of {username} User does not exist."
 
-    # Check if the user exists
-    if user:
-        # Check if the new username is unique
-        if not is_username_unique(new_username):
-            return "The new username is already taken"
+    if userExists(new_username):
+        print("User with this username already exists")
+        return "User with this username already exists"
+    
+    # Check if the new username is unique
+    if not is_username_unique(new_username):
+        return "The new username is already taken"
 
-        try:
-            # Update the username
-            users.update_one({"username": username}, {"$set": {"username": new_username}})
-            print(f"Username for {username} updated successfully to {new_username}")
-            return "Username updated successfully"
-        except Exception as e:
-            print(e)
-            return "Error updating username"
-    else:
-        return "User not found"
-
+    try:
+        # Update the username
+        users.update_one({"username": username}, {"$set": {"username": new_username}})
+        print(f"Username for {username} updated successfully to {new_username}")
+        return "Username updated successfully"
+    except Exception as e:
+        print(e)
+        return "Error updating username"
 
 
 
