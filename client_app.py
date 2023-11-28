@@ -159,7 +159,7 @@ def change_password():
 
 def user_menu():
     while True:
-        userInput = input("\nChoose the option: \n1.Open chats\n2.Create a new chat\n3.Change your username\n4.Change your password\n5.Report the user\n*EXIT*\n")
+        userInput = input("\nChoose the option: \n1.Open chats\n2.Create a new chat\n3.Change your username\n4.Change your password\n5.Report a user\n*EXIT*\n")
 
         if userInput.upper() == 'EXIT':
             send_to_server(userInput)
