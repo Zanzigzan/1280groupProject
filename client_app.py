@@ -146,7 +146,7 @@ def change_username():
     
    
 def change_password():
-    userName = input("Enter you user name: ")
+    userName = input("Enter your username: ")
     userInput1 = input("New password: ")
     userInput2 = input("Confirm your new password: ")
     if(userInput1 == userInput2):
