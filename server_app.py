@@ -103,6 +103,8 @@ def update_username():
         # call the change_username func in db
         call = db.update_username(oldUsername, newUsername)
         send_to_client(call)
+    else:
+        send_to_client("Your username will not be changed")
    
 def update_password():
     userInput = recive_from_client()
