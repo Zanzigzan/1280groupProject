@@ -25,11 +25,11 @@ def register(username, password):
     users = db["users"]
     
     if not (3 < len(username) and len(username) < 10):
-        print("User {new_username} does not meet the requirements")
+        print(f"User {username} does not meet the requirements")
         return "Your username have to be between 3 to 10 characters"
     
     if not (4 < len(password) and len(password) < 12):
-        print("Password {password} does not meet the requirements")
+        print(f"Password {password} does not meet the requirements")
         return "Your password have to be between 4 to 12 characters"
 
     if (is_username_unique(username)):
@@ -135,7 +135,6 @@ def get_messages(username1, username2):
     users = [username1, username2]
 
     try:
-        # Fetch the chat document for the specified users
         chat_document = chats.find_one({"users": {"$all": users}})
 
         # If the chat document exists, return the messages array
@@ -157,7 +156,6 @@ def delete_message(from_username, to_username, message_index):
         return "Error one of the users does not exists"
 
     try:
-        # Find the specific chat document
         chat = chats.find_one({"users": {"$all": users}})
         if chat and 0 <= message_index < len(chat["messages"]):
             # Update the specific message at the given index

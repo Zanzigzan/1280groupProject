@@ -4,7 +4,6 @@ import sys
 
 from server_app import *
 
-# Global variables
 clients_lock = threading.Lock()
 clients = []
 running = True
@@ -34,7 +33,7 @@ def handle_client(client_socket, client_address):
 def shutdown_server(server):
     global running, clients
     running = False
-    # ensure that only one thread can execute the block of code under this statement at a time. 
+
     with clients_lock:
         for client in clients:
             try:
@@ -50,7 +49,6 @@ def shutdown_server(server):
 def main():
     global running
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # reference: https://ianfinlayson.net/class/cpsc414/notes/03-sockets
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     server_address = ('127.0.0.1', 12345)
@@ -58,7 +56,6 @@ def main():
     server.listen(5)
     print('[*] Server is listening on ', server_address)
 
-    # Thread to listen for shutdown command
     def listen_for_shutdown_command():
         global running
         while running:
